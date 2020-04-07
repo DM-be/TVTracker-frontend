@@ -1,0 +1,38 @@
+
+<div class="component-wrapper">
+  <div class="icon-wrapper">
+    <div *ngIf="!inCollection">
+        <ion-icon (click)="addToBufferedMovies($event)" name="bookmark" class="bookMarkIcon"></ion-icon> 
+        <ion-icon (click)="addToBufferedMovies($event)" name="add" class="addIcon"></ion-icon> 
+    </div>
+     <div *ngIf="inCollection">
+        <ion-icon (click)="log($event)" name="bookmark" class="bookMarkIcon fullOpacity" color="success"></ion-icon> 
+        <ion-icon  name="checkmark" class="addIcon"></ion-icon> 
+     </div>
+  </div>
+  <div class="card-wrapper">
+    <ion-card [routerLink]="routerLink" routerDirection="forward">
+      <div class="img-container">
+          <ion-img  [style.opacity]="loaded ? 1 : 0"
+          (ionImgDidLoad)="loaded = true" 
+          src="{{tmdbResult.getPoster()}}">
+          </ion-img >
+          <ion-spinner [style.display]="loaded ? 'none' : 'block'"></ion-spinner>        
+      </div>
+      <ion-card-content>
+
+        <ion-row class="block-ellipsis"><ion-text color="light">{{tmdbResult.title || tmdbResult.name}}</ion-text></ion-row>
+        <ion-row >
+          <ion-item no-padding> 
+              <ion-label>
+                {{tmdbResult.vote_average}}
+              </ion-label>
+              <ion-icon name="star" slot="start" size="small"></ion-icon>
+            </ion-item>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</div>
+
+

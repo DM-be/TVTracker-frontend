@@ -1,0 +1,50 @@
+.bookMarkIcon {
+    position: absolute;
+    top: -8px;;
+    left: -14px;
+    font-size: 48px;
+    opacity: 0.7;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .addIcon {
+    opacity: 1 !important;
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    font-size: 16px;
+    padding: 0 !important;
+    margin-left: 12px;
+    margin-top: 12px;
+    color: white
+  }
+
+ion-img {
+
+    width: calc(100vw/5);
+    height: calc(calc(100vw/5) *1.5);
+    min-height: height;
+    position: relative;
+    top: 0px;
+    left: 0px;
+}
+
+ion-card {
+  width: calc(100vw/5);
+  height: calc(calc(100vw/5) *1.5);
+}
+
+
+ion-spinner {
+  position: absolute;
+  width: 20px;
+  height:20px;
+ 
+}
+
+.img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

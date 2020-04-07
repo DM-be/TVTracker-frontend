@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-toolbar>
+ 
+        <ion-buttons slot="secondary">
+    
+            <ion-button>
+              <ion-icon slot="icon-only" name="search"></ion-icon>
+            </ion-button>
+           
+          </ion-buttons>
+          <ion-buttons slot="start">
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+          
+      </ion-toolbar>
+    
+</ion-header>
+
+<ion-content>
+
+
+
+<app-trailer-slider [tmdbResults]="nowPlayingMovies" ></app-trailer-slider>  
+ 
+
+
+<app-tmdb-scrolling-cards [tmdbResults]="nowPlayingMovies" [title]="'Now playing'"></app-tmdb-scrolling-cards>
+<app-tmdb-scrolling-cards [tmdbResults]="upComingMovies" [title]="'Upcoming'"></app-tmdb-scrolling-cards>
+
+
+
+</ion-content>

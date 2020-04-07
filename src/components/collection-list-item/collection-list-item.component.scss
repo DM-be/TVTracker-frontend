@@ -1,0 +1,51 @@
+
+
+
+// should be coming from list item small....
+ion-img {
+
+    width: calc(100vw/4.5);
+    height: calc(calc(100vw/4.5) *1.5);
+    position: relative;
+    
+}
+
+.averageVoteRow {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+ion-card {
+  width: calc(100vw/4.5);
+  height: calc(calc(100vw/4.5) *1.5);
+  margin: 0px;
+}
+
+ion-item {
+  --padding-start: 8px;
+}
+
+ion-icon {
+  padding:5px;
+}
+
+ion-icon[name="star"]
+{
+  margin-right: 5px;
+  color: #F5C518;
+  font-size: 12px;
+}
+
+ion-item-divider {
+  margin-top: 5px;
+  min-height: 1px!important;
+  margin-bottom: 5px;
+}
+
+ion-label {
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  margin-bottom: 5px;
+}
+

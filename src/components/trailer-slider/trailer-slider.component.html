@@ -1,0 +1,48 @@
+
+  <div *ngIf="tmdbResults">
+
+  
+  <ion-slides>
+    <ion-slide *ngFor="let result of tmdbResults; let i = index">
+    <ion-card>
+
+
+      <div class="img-container">
+        <ion-img 
+        src={{result.getBackdrop()}} 
+        [style.display]="loaded[i] ? 1 : 0"
+        (ionImgDidLoad)="loaded[i] = true" >
+      
+         </ion-img>
+        <ion-spinner [style.display]="loaded[i] ? 'none' : 'block'"></ion-spinner>
+        <ion-icon name="play-circle"></ion-icon>
+      </div>
+  
+        <ion-card-content>
+
+          <div class="text-container">
+            <ion-row>
+                <ion-text color="light">{{result.title || result.name}}</ion-text>
+            </ion-row>
+            <ion-row>
+                Official trailer
+            </ion-row>
+             
+          </div>
+      
+       
+
+        </ion-card-content>
+        <app-tmdb-movie-small [tmdbMovie]="result"></app-tmdb-movie-small>
+    </ion-card>
+         
+          
+      
+      
+    </ion-slide>
+  </ion-slides>
+</div>
+
+<div *ngIf="!tmdbResults">
+  <app-skeleton-trailer-slider></app-skeleton-trailer-slider>
+</div>

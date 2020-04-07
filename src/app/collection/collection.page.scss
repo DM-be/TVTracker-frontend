@@ -1,0 +1,23 @@
+
+.darkerColor {
+    --background: #191919 !important;
+}
+
+ion-item-divider {
+    margin-top: 5px;
+    min-height: 1px!important;
+    margin-bottom: 5px;
+}
+
+ion-card-title {
+    font-size: 24px;
+}
+
+ion-row > ion-card-title {
+    font-size: 16px;
+}
+
+
+.virtualDiv {
+    height: calc(calc(calc(100vw/4.5) *1.5)+ 11px);
+} 

@@ -1,0 +1,21 @@
+
+
+
+<div *ngIf="tmdbResults">
+
+        <ion-card style="ios">
+                <ion-card-header>
+                    <ion-card-title>{{title}}</ion-card-title>
+                </ion-card-header>
+                
+                <div scrollX="true">
+                    <app-tmdb-card class="scrollItem" *ngFor="let tmdbResult of tmdbResults" [tmdbResult]="tmdbResult"></app-tmdb-card>
+                </div>
+                </ion-card>
+</div>
+
+<div *ngIf="!tmdbResults">
+     <app-skeleton-scrolling-movies></app-skeleton-scrolling-movies>
+</div>
+
+

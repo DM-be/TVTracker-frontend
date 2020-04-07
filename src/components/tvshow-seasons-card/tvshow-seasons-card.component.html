@@ -1,0 +1,25 @@
+
+
+<ion-card >
+    <ion-row>
+      <ion-segment checked scrollable>
+        <div *ngFor="let season of seasons">
+            <ion-segment-button  checked="selectedSeasonNumber === season.season_number" (click)="updateSelectedSeasonNumber(season.season_number)" >
+                <ion-label>{{season.name}}</ion-label>
+              </ion-segment-button>
+        </div>
+
+      </ion-segment>
+    </ion-row>
+    <ion-row class="viewHeight">
+        <ion-col size="4" *ngIf="seasons">
+            <ion-img [src]="getSelectedSeasonPoster()"></ion-img>
+          </ion-col>
+    <ion-col size="8">
+        <app-tvshow-episodes-list *ngIf="episodes" [episodes]="episodes"></app-tvshow-episodes-list>
+    </ion-col>
+      
+     
+
+    </ion-row>
+</ion-card>

@@ -1,0 +1,47 @@
+app-tmdb-movie-small {
+    position: absolute;
+    top: 150px;;
+    left: 0;
+}
+
+ion-card {
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+
+.img-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+ion-spinner {
+    position: absolute;
+    width: 50px;
+    height:50px;
+   
+  }
+
+ion-icon {
+    position: absolute;
+    font-size: 64px;
+    color: white;
+
+}
+
+ion-img {
+    width: 100vw;
+    height: calc(100vw/ 1.77);
+    position: relative;
+}
+
+ion-card {
+    height: calc(calc(100vw/ 1.77) + 60px);
+}
+
+
+.text-container {
+   left: calc(calc(100vw/5) + 30px); // small card width and margins + 10;
+   position: absolute;
+}

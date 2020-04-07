@@ -1,0 +1,88 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+          </ion-buttons>
+        <ion-buttons slot="secondary">
+           
+          <ion-button>
+            <ion-icon slot="icon-only" name="search"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-title>Discover movies</ion-title>
+      </ion-toolbar>
+    
+</ion-header>
+
+<ion-content>
+  
+  <ion-card *ngIf="tmdbMovieDetailsDto">
+   
+
+  
+    <ion-img src="{{getBackdrop()}}"></ion-img>
+    <ion-grid>
+      <ion-card-header style="android">
+          <ion-row> 
+              <ion-card-title color="light">{{tmdbMovieDetailsDto.title}}</ion-card-title>
+            </ion-row>
+            <ion-row><ion-card-subtitle>{{generateReleaseDateRuntimeGenreString()}}</ion-card-subtitle></ion-row>
+            <ion-row *ngIf="pouchMovie" justify-content-start>
+              <ion-icon [name]="pouchMovie.monitored ? 'eye' : 'eye-off'" color="primary" class="statusIcon"></ion-icon>
+              <ion-icon *ngIf="isPouchMovie()" name="{{getCloudIconName()}}" color="success" class="statusIcon" ></ion-icon>
+              <ion-icon *ngIf="isBufferedPouchMovie()" name="cloud-upload" color="primary" class="statusIcon"></ion-icon>
+            </ion-row>
+      </ion-card-header>
+
+      <ion-item-divider></ion-item-divider>
+
+      <ion-card-content>
+
+      <ion-row class="status">
+        <ion-text color="light">{{tmdbMovieDetailsDto.status}}</ion-text>
+      </ion-row>
+
+      </ion-card-content>
+      <ion-item-divider></ion-item-divider>
+      <ion-card-content>
+   
+      <ion-row> 
+        <ion-col size="4">
+          <ion-img src="{{getPoster()}}"></ion-img>
+        </ion-col>
+        <ion-col>
+          <ion-row class="block-ellipsis"><ion-text color="light">{{tmdbMovieDetailsDto.overview}}</ion-text></ion-row>
+          <ion-row>
+              <ion-button *ngIf="!pouchMovie" expand="block" (click)="presentActionSheet()" >
+                  <ion-icon slot="start" name="add" ></ion-icon>
+                  Add to collection
+                </ion-button>
+                <ion-button *ngIf="isBufferedPouchMovie()" color="warning" (click)="removeFromBufferedMovies()"expand="block" fill="outline">
+                    <ion-icon slot="start" name="checkmark" ></ion-icon>
+                   <ion-text color="light"> Added to sync</ion-text>
+                  </ion-button>
+                  <ion-button *ngIf="isPouchMovie()" expand="block" fill="outline" color="success">
+                      <ion-icon slot="start" name="checkmark" ></ion-icon>
+                      <ion-text color="light"> Added to collection</ion-text>
+                    </ion-button>
+            </ion-row>
+
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4">
+            <ion-row justify-content-center><ion-icon name="star"></ion-icon></ion-row>
+            <ion-row justify-content-center><ion-text color="light"><b>{{tmdbMovieDetailsDto.vote_average}}</b>/10</ion-text></ion-row>
+            <ion-row justify-content-center>{{tmdbMovieDetailsDto.vote_count}}</ion-row>
+        </ion-col>
+ 
+      
+      </ion-row>
+    </ion-card-content>
+    </ion-grid>
+    
+  </ion-card>
+
+
+<app-tmdb-scrolling-cards *ngIf="similarMovies?.length > 0" [tmdbResults]="similarMovies" [title]="'Similar movies'"></app-tmdb-scrolling-cards>
+</ion-content>

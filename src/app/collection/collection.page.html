@@ -1,0 +1,82 @@
+<ion-header>
+<ion-toolbar>
+  <ion-buttons slot="secondary">
+    <ion-button>
+      <ion-icon slot="icon-only" name="search"></ion-icon>
+    </ion-button>
+   
+  </ion-buttons>
+  <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+</ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+    <div class="ion-margin-top"><ion-card-title class="ion-margin-start">Your collection</ion-card-title>
+
+      <ion-row>
+        <ion-col>
+            <ion-chip *ngIf="filterType" outline color="primary">
+                <ion-label>{{filterType}}</ion-label>
+                <ion-icon name="close-circle" (click)="resetFilterType(i)"></ion-icon>
+              </ion-chip>
+
+            <ion-chip *ngFor="let appliedFilter of filters; let i = index" outline color="primary">
+                <ion-label>{{appliedFilter}}</ion-label>
+                <ion-icon name="close-circle" (click)="removeFilter(i)"></ion-icon>
+              </ion-chip>
+        </ion-col>
+      </ion-row>
+
+        <ion-row *ngIf="!filterType">
+          <ion-col>
+              <ion-chip outline color="light" (click)="addTypeFilter('movies')">
+                  <ion-label>Movie</ion-label>
+                </ion-chip>
+                <ion-chip outline color="light">
+                    <ion-label >TV show</ion-label>
+                  </ion-chip>   
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="filterType">
+            <ion-col>
+                <ion-chip *ngFor="let unappliedFilter of possibleFilters; let i = index" outline color="light" color="light" (click)="addFilter(unappliedFilter)">
+                    <ion-label>{{unappliedFilter}}</ion-label>
+                  </ion-chip>
+            </ion-col>
+          </ion-row>
+
+        <ion-item-divider></ion-item-divider>
+        <ion-row>
+            <ion-col size="10" class="ion-padding-start">
+              <ion-row><ion-card-title>{{moviesInView.length}} Titles</ion-card-title></ion-row>
+              <ion-row><ion-card-subtitle>Sorted by date added</ion-card-subtitle></ion-row>
+            </ion-col>
+            <ion-col align-self-center>
+              <ion-row justify-content-center> <ion-icon name="funnel" ></ion-icon></ion-row>
+            </ion-col>
+        </ion-row>
+        <ion-item-divider></ion-item-divider>
+      </div>
+
+
+      <div *ngIf="moviesInView?.length > 0">
+
+          <ion-virtual-scroll [items]="moviesInView" [itemHeight]="calculateApproxHeight"  >
+
+              <div *virtualItem="let movie" class="virtualDiv">
+                  <app-collection-list-item [item]="movie" (deletedMovie)="refreshMovies(slidingItem)"></app-collection-list-item>
+              </div>
+            </ion-virtual-scroll>
+
+
+      </div>
+      
+      <div *ngIf="recommendedMovies"> 
+        <app-tmdb-scrolling-cards [tmdbResults]="recommendedMovies" [title]="'Recommendations'"></app-tmdb-scrolling-cards>
+      </div>
+    </ion-grid>
+</ion-content>

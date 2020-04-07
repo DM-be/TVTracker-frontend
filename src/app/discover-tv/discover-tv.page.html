@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+
+      <ion-buttons slot="secondary">
+  
+          <ion-button>
+            <ion-icon slot="icon-only" name="search"></ion-icon>
+          </ion-button>
+         
+        </ion-buttons>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+        
+    </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+
+
+
+<app-trailer-slider [tmdbResults]="nowAiringTvShows"></app-trailer-slider>  
+
+
+
+<app-tmdb-scrolling-cards [tmdbResults]="nowAiringTvShows" [title]="'Now airing'"></app-tmdb-scrolling-cards>
+<app-tmdb-scrolling-cards [tmdbResults]="popularTvShows" [title]="'Popular'"></app-tmdb-scrolling-cards>
+
+
+
+</ion-content>

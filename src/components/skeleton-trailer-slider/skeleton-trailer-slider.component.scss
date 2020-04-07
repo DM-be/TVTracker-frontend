@@ -1,0 +1,44 @@
+app-skeleton-movie-small {
+    position: absolute;
+    top: 150px;;
+    left: 0;
+}
+
+
+.img-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+ion-icon {
+    position: absolute;
+    font-size: 64px;
+    opacity: 0.5;
+    color: lightgray;
+
+}
+
+.skeleton-ion-img {
+    width: 100vw !important;
+    height: calc(100vw/ 1.77) !important;
+    position: relative;
+    opacity: 0.1;
+    background-color: lightgray;
+    padding: 0;
+    margin: 0;
+}
+
+.skeleton-container-card {
+    height: calc(calc(100vw/ 1.77) + 60px) !important;
+    padding: 0px;
+    margin: 0px;
+    --background: #212121 !important;
+}
+
+
+.text-container {
+   left: calc(calc(100vw/5) + 30px) !important; // small card width and margins + 10;
+   position: absolute;
+}

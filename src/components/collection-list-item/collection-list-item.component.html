@@ -1,0 +1,49 @@
+<ion-item-sliding #slidingItem>
+  <ion-item-options side="start">
+    <ion-item-option color="danger" (click)="deleteMovie(slidingItem)">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+
+
+
+<ion-item [routerLink]="'/movie-detail/' + item.tmdbId" routerDirection="forward">
+    <ion-col size="3">
+      <ion-card>
+        <ion-img [style.opacity]="loaded ? 1 : 0"
+        (ionImgDidLoad)="loaded = true" src="{{item.getPoster()}}"></ion-img>
+      </ion-card>
+    </ion-col >
+    <ion-col align-self-start class="ion-padding-start">
+
+      <ion-row class="ion-margin-top"> 
+          <ion-label class="ion-text-wrap">{{item.title}}</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-card-subtitle>2019 2h10</ion-card-subtitle>
+      </ion-row>
+      <ion-row class="averageVoteRow" align-items-center>
+               
+              <ion-icon name="star" size="small"></ion-icon>
+              {{item.vote_average}}
+      </ion-row>
+      <ion-item-divider></ion-item-divider>
+      <ion-row >
+          <ion-icon [name]="item.monitored ? 'eye' : 'eye-off'" size="small" color="primary"></ion-icon>
+          <ion-icon *ngIf="item.grabbed" name="cloud-download" size="small" color="success"></ion-icon>
+          <ion-icon *ngIf="item.downloaded" name="cloud-done" size="small" color="success"></ion-icon>
+          <ion-icon name="cloud-upload"  size="small" color="primary"></ion-icon>
+
+      </ion-row>
+    </ion-col>
+ 
+</ion-item>
+<ion-item-options>
+  <ion-item-option color="primary" (click)="updateMonitoredStatus()">
+    <ion-icon slot="icon-only" [name]="item.monitored ? 'eye-off' : 'eye'"></ion-icon>
+  </ion-item-option>
+  <ion-item-option color="success" *ngIf="!item.downloaded && !isBufferedPouchMovie() ">
+    <ion-icon slot="icon-only" name="cloud-download"></ion-icon>
+  </ion-item-option>
+</ion-item-options>
+</ion-item-sliding>

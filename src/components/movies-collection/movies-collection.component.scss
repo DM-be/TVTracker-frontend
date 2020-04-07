@@ -1,0 +1,20 @@
+div[scrollx=true] {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    &::-webkit-scrollbar {
+       display: none;
+    }
+     .scroll-item {
+       flex: 0 0 auto;
+    }
+  }
+
+
+  ion-card {
+     padding-bottom: 20px;
+     padding-left: 0px;
+     padding-right: 0px;
+     margin-left: 0px;
+     margin-right: 0px;
+  }

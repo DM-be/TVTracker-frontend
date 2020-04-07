@@ -1,0 +1,98 @@
+ion-img {
+
+    width: calc(100vw/3);
+    height: calc(calc(100vw/3) *1.5);
+    position: relative;
+    top: 0px;
+    left: 0px;
+}
+
+ion-card {
+  width: calc(100vw/3);
+  height: calc(calc(100vw/3) *1.5 + 95px);
+  margin: 5px;
+}
+
+.component-wrapper {
+  width: calc(100vw/3);
+  height: calc(calc(100vw/3) *1.5 + 95px);
+  margin: 5px;
+  position: relative;
+}
+
+.icon-wrapper {
+  position: relative;
+  z-index: 1;
+}
+ion-spinner {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+}
+
+.img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.block-ellipsis {
+  width: (100vw/3.5);
+  height: 2.8em;
+  line-height: 1.4em;
+  display: flex;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: auto; 
+  word-wrap: break-word;
+}
+
+
+
+ion-item {
+  --background: $inner-card-background-color;
+}
+
+
+
+ion-label {
+  font-size: 12px !important;
+  color: #989aa2;
+}
+
+ion-icon[name="star"]
+{
+  margin-right: 5px;
+  color: #F5C518;
+}
+
+ .bookMarkIcon {
+    position: absolute;
+    top: -9px;;
+    left: -10px;
+    font-size: 64px;
+    opacity: 0.7;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .addIcon {
+    opacity: 1 !important;
+    position: absolute;
+    top: -8px;
+    left: -6px;
+    font-size: 24px;
+    padding: 0 !important;
+    margin-left: 12px;
+    margin-top: 12px;
+    color: white
+  }
+
+.fullOpacity {
+  opacity: 0.8;
+}
+
+  ::-webkit-scrollbar {
+    display: none;
+}

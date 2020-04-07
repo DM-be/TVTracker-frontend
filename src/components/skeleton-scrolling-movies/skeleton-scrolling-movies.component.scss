@@ -1,0 +1,37 @@
+
+.skeleton-container-card {
+    padding-bottom: 20px !important;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    --background: #212121 !important;
+   }
+  
+  .skeleton-movies-large-card {
+    width: calc(100vw/3);
+    height: calc(calc(100vw/3) *1.5 + 95px);
+    margin: 5px !important;
+    --background: #2A2A2A !important;
+   }
+  
+   .skeleton-ion-img {
+    width: calc(calc(100vw/3) -5px);
+    height: calc(calc(100vw/3) *1.5);
+    position: relative;
+    opacity: 0.1;
+    background-color: lightgray;
+   }
+  
+   div[scrollx=true] {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    &::-webkit-scrollbar {
+       display: none;
+    }
+     .scroll-item {
+       flex: 0 0 auto;
+    }
+  }
+

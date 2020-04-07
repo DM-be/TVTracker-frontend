@@ -1,0 +1,13 @@
+<ion-card style="ios">
+    <ion-card-header>
+        <ion-card-title>{{title}}</ion-card-title>
+    </ion-card-header>
+    
+    <div scrollX="true">
+        <app-pouch-movie class="scrollItem" *ngFor="let pouchMovie of pouchMovies" [pouchMovie]="pouchMovie"></app-pouch-movie>
+    </div>
+    
+
+    
+    </ion-card>
+    

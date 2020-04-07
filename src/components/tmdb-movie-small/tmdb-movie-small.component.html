@@ -1,0 +1,17 @@
+
+<ion-card>
+    <div class="img-container"> 
+
+      <ion-img  [style.opacity]="loaded ? 1 : 0"
+
+      (ionImgDidLoad)="loaded = true" 
+      src="{{tmdbMovie.getPoster()}}">
+      </ion-img >
+      
+      <ion-spinner [style.display]="loaded ? 'none' : 'block'"></ion-spinner>
+      
+        <ion-icon name="bookmark" class="bookMarkIcon"></ion-icon> 
+        <ion-icon  name="add" class="addIcon"></ion-icon> 
+      </div>
+</ion-card>
+

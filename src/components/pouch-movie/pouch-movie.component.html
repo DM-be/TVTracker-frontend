@@ -1,0 +1,37 @@
+
+<div class="component-wrapper">
+  <div class="icon-wrapper">
+        <ion-icon name="bookmark" class="bookMarkIcon fullOpacity" color="primary"></ion-icon> 
+  </div>
+  <div class="card-wrapper">
+    <ion-card [routerLink]="'/movie-detail/' + pouchMovie.tmdbId" routerDirection="forward">
+      <div class="img-container">
+          <ion-img  [style.opacity]="loaded ? 1 : 0"
+          (ionImgDidLoad)="loaded = true" 
+          src="{{pouchMovie.getPoster()}}">
+          </ion-img >
+          <ion-spinner [style.display]="loaded ? 'none' : 'block'"></ion-spinner>        
+      </div>
+      <ion-card-content>
+
+        <ion-row class="block-ellipsis"><ion-text color="light">{{pouchMovie.title}}</ion-text></ion-row>
+        <ion-row >
+          <ion-col >
+              <ion-row justify-content-center><ion-icon [name]="pouchMovie.monitored ? 'eye' : 'eye-off'" size="small" color="primary"></ion-icon></ion-row>
+          </ion-col>
+          <ion-col size="6" *ngIf="pouchMovie.grabbed">
+            <ion-row justify-content-center><ion-icon name="cloud-download" size="small" color="success"></ion-icon></ion-row>
+          </ion-col>
+          <ion-col size="6" *ngIf="pouchMovie.downloaded">
+            <ion-row justify-content-center><ion-icon name="cloud-done" size="small" color="success"></ion-icon></ion-row>
+          </ion-col>
+          <ion-col size="6" *ngIf="isBufferedPouchMovie()">
+              <ion-row justify-content-center><ion-icon name="cloud-upload"  size="small" color="primary"></ion-icon></ion-row>
+            </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</div>
+
+
