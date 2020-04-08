@@ -3,6 +3,5 @@
 
 
 
-![](https://media.giphy.com/media/TdXbazTnsZVOgbV8Px/giphy.gif)
+![lazy loading images](https://media.giphy.com/media/VbyRnlifzthMOQ6h2j/giphy.gif)
 
-![](https://media.giphy.com/media/TdXbazTnsZVOgbV8Px/giphy.gif)
