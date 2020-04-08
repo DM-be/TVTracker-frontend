@@ -3,9 +3,9 @@
 
 
 
-![lazy loading images](https://media.giphy.com/media/VbyRnlifzthMOQ6h2j/giphy.gif)
+![lazy loading images](https://media.giphy.com/media/VbyRnlifzthMOQ6h2j/giphy.gif)  ![dl movies](https://media.giphy.com/media/IciueVTEN7IsDyly5j/giphy.gif)
 
-![dl movies](https://media.giphy.com/media/IciueVTEN7IsDyly5j/giphy.gif)
+
 
 ![dl shows](https://media.giphy.com/media/Y3wjYbSVJhJSWPkw1J/giphy.gif)
 
