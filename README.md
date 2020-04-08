@@ -1,4 +1,4 @@
 # Movietracker-frontend
 
 
-![Alt Text](https://gifs.com/gif/yrdy-zvyNg2.gif)
+![Alt Text](https://j.gifs.com/zvyNg2.gif)
