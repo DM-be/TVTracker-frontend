@@ -1,4 +1,4 @@
-# Movietracker-frontend
+# TVTracker-frontend
 
 ## Description
 
@@ -45,7 +45,7 @@ Coming soon
 
 ![dl shows](https://media.giphy.com/media/Y3wjYbSVJhJSWPkw1J/giphy.gif) ![dl shows detail](https://media.giphy.com/media/JmOWoSHLyITcNTJm1a/giphy.gif)
 
-#### Real time collection overview with infinite scrolling and filtering 
+#### Realtime collection overview with infinite scrolling and filtering 
 
 ![collection-overview](https://media.giphy.com/media/dzCmi9PqA6Bf3Vj24L/giphy.gif) ![collection-filter](https://media.giphy.com/media/h1oUfnkGzqNGJYjvCY/giphy.gif) ![collection-add-example](https://media.giphy.com/media/cjykHOKy1eOqA6T10Q/giphy.gif)
 
