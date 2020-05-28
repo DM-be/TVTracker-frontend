@@ -12,8 +12,8 @@ export class AddMovieCommand implements Command {
     }
 
     execute(): Promise<void> {
-        const radarrMovie = this.generateRaddarMovie(this.addMovieCommandOptions)
-        this.movieService.addMovie();
+        const radarrMovie = this.generateRaddarMovie(this.addMovieCommandOptions, this.tmdbMovie);
+        this.movieService.addMovie(radarrMovie);
     }
 
     generateRaddarMovie(addMovieCommandOptions: AddMovieCommandOptions, tmdbMovie: TmdbMovie): RadarrMovie {
@@ -25,12 +25,15 @@ export class AddMovieCommand implements Command {
         radarrImages[0].url = poster;
         radarrImages[1].coverType = "fanart"; // check backend if this is also backdrop
         radarrImages[1].url = backDrop;
-
-
         return {
-            
-
-        } as RadarrMovie
+            addOptions,
+            downloaded: false,
+            grabbed: false,
+            images: radarrImages,
+            monitored,
+            tmdbId,
+            qualityProfileId,
+        } as RadarrMovie;
     }
 
 }
