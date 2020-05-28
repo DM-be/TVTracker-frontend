@@ -16,13 +16,16 @@ export class PouchDataLayer extends DataLayer {
     private POUCH_LIVE_RETRY = { live: true};
 
 
-    addMovie(tmdbId: number): Promise<void> {
-
-
-
-
-
-        throw new Error('Method not implemented.'); 
+    public async addMovie(radarrMovie: RadarrMovie): Promise<void> {
+      try {
+        radarrMovie._id = radarrMovie.tmdbId.toString();
+        await this.movieCollection.put(radarrMovie);
+        const movies = this.movies$.getValue();
+        movies.unshift(radarrMovie);
+        this.movies$.next(movies);
+        } catch (error) {
+          console.log(`unable to add movie to collection: ${error}`);
+        }
     }
     removeMovie(tmdbId: number): Promise<void> {
         throw new Error('Method not implemented.');
@@ -96,7 +99,8 @@ export class PouchDataLayer extends DataLayer {
       }
     const updatedMovieIndex = movies.findIndex(m => m.tmdbId === radarrMovie.tmdbId);
     if (updatedMovieIndex !== -1) {
-        Object.assign(movies[updatedMovieIndex], radarrMovie);
+        const updatedMovie = Object.assign(movies[updatedMovieIndex], radarrMovie) as RadarrMovie;
+        movies[updatedMovieIndex] = updatedMovie;
         this.movies$.next(movies);
       } else {
         movies.unshift(radarrMovie);
