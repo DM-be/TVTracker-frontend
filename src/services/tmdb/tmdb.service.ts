@@ -21,7 +21,7 @@ export class TmdbService {
   constructor() { }
 
 
-  async getTvdbId(id: number) {
+  async getTvdbId(id: number): Promise<string> {
     const url = `https://api.themoviedb.org/3/tv/${id}/external_ids?api_key=${this.TMDB_API_KEY}`;
     const axiosResponse: AxiosResponse<any> = await Axios.get(url);
     return axiosResponse.data.tvdb_id;
@@ -44,7 +44,7 @@ export class TmdbService {
     const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${this.TMDB_API_KEY}`;
     const axiosResponse: AxiosResponse<any> = await Axios.get(url);
     const tmdbResponse = axiosResponse.data as TmdbResponse;
-    let movies: TmdbMovie [] = [];
+    const movies: TmdbMovie [] = [];
     tmdbResponse.results.forEach((tmdbMovieResultDto: TmdbMovieResultDTO ) => {
       movies.push(new TmdbMovie(tmdbMovieResultDto));
     });
@@ -55,13 +55,12 @@ export class TmdbService {
     const url = `https://api.themoviedb.org/3/tv/on_the_air?api_key=${this.TMDB_API_KEY}`;
     const axiosResponse: AxiosResponse<any> = await Axios.get(url);
     const tmdbResponse = axiosResponse.data as TmdbResponse;
-    console.log(tmdbResponse)
-    let tvShows: TmdbTvShow [] = [];
+    const tvShows: TmdbTvShow [] = [];
     tmdbResponse.results.forEach((tmdbTvShowResultDto: TmdbTvShowResultDTO ) => {
       tvShows.push(new TmdbTvShow(tmdbTvShowResultDto));
     });
     return tvShows;
-  } 
+  }
 
 // /tv/popular
 
@@ -69,7 +68,7 @@ async getPopularTmdbTvShows(): Promise<TmdbTvShow []> {
   const url = `https://api.themoviedb.org/3/tv/popular?api_key=${this.TMDB_API_KEY}`;
   const axiosResponse: AxiosResponse<any> = await Axios.get(url);
   const tmdbResponse = axiosResponse.data as TmdbResponse;
-  let tvShows: TmdbTvShow [] = [];
+  const tvShows: TmdbTvShow [] = [];
   tmdbResponse.results.forEach((tmdbTvShowResultDto: TmdbTvShowResultDTO ) => {
     tvShows.push(new TmdbTvShow(tmdbTvShowResultDto));
   });
@@ -116,7 +115,7 @@ async getPopularTmdbTvShows(): Promise<TmdbTvShow []> {
     const url = `https://api.themoviedb.org/3/movie/${tmdbId}}/recommendations?api_key=${this.TMDB_API_KEY}`;
     const axiosResponse: AxiosResponse<any> = await Axios.get(url);
     const tmdbResponse = axiosResponse.data as TmdbResponse;
-    let movies: TmdbMovie [] = [];
+    const movies: TmdbMovie [] = [];
     tmdbResponse.results.forEach((tmdbMovieResultDto: TmdbMovieResultDTO ) => {
       movies.push(new TmdbMovie(tmdbMovieResultDto));
     });
