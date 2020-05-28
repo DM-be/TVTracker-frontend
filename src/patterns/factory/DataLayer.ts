@@ -38,6 +38,7 @@ export abstract class DataLayer {
         return this._initializedDataLayer$;
     }
 
+
     private async initializeDatalayer(): Promise<void> {
         try {
             this._movies$ = await this.initializeMovies();
@@ -51,7 +52,7 @@ export abstract class DataLayer {
     onInit() {}
 
     private emitInitializedDataLayer$() {
-        this.initializedDataLayer$.next(true);
+        this._initializedDataLayer$.next(true);
     }
 
     abstract addMovie(tmdbId: number): Promise<void>;
