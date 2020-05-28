@@ -10,7 +10,7 @@ export class PouchDataLayer extends DataLayer {
 
 
     private movieCollection: PouchDB;
-    private moviesLiveReplication: any;
+    private movieReplication: any;
 
     private BACKEND_URL = environment.BACKEND_URL;
     private POUCH_LIVE_RETRY = { live: true};
@@ -51,7 +51,7 @@ export class PouchDataLayer extends DataLayer {
         }
     }
 
-    movieIsInCollection(tmdbId: number): boolean {
+    public movieIsInCollection(tmdbId: number): boolean {
         const movie = this.getMovie(tmdbId);
         if (movie) {
             return true;
@@ -71,10 +71,19 @@ export class PouchDataLayer extends DataLayer {
   }
 
   private syncMovieCollection() {
-    this.moviesLiveReplication = this.movieCollection.sync(this.BACKEND_URL + 'movies', this.POUCH_LIVE_RETRY).on('change', (info) => {
-      this.handleRemoteMovieChanges(info);
+    this.connectedToLocalNetwork$.subscribe((connected) => {
+        if(connected)
+        {
+        this.movieReplication = this.movieCollection.sync(this.BACKEND_URL + 'movies', this.POUCH_LIVE_RETRY)
+        .on('change', info => this.handleRemoteMovieChanges(info));
+        }
+         else if (!connected) { // ignore the first undefined --> refactor with rxjs course (take first defined value)
+            this.cancelReplication();
+         }
+
     });
   }
+
 
   private async handleRemoteMovieChanges(info: any) {
     const changedDocsFromRemote = info.docs as RadarrMovie [];
@@ -97,5 +106,17 @@ export class PouchDataLayer extends DataLayer {
   }
 
 
+  private async cancelReplication(): Promise<void> {
+    try {
+      await this.movieReplication.cancel();
+      console.log("cancelled the live replication because we lost ssid access");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 }
+
+
+
+

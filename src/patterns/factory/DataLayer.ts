@@ -22,6 +22,8 @@ export abstract class DataLayer {
         this.initializeDatalayer();
     }
 
+
+
     get movies$(): BehaviorSubject<RadarrMovie []> {
         return this._movies$;
     }
@@ -55,7 +57,7 @@ export abstract class DataLayer {
         this._initializedDataLayer$.next(true);
     }
 
-    abstract addMovie(tmdbId: number): Promise<void>;
+    abstract addMovie(radarrMovie: RadarrMovie): Promise<void>;
     abstract removeMovie(tmdbId: number): Promise<void>;
     abstract updateMovie(tmdbId: number): Promise<void>;
     abstract getMovie(tmdbId: number): RadarrMovie;

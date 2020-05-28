@@ -14,25 +14,18 @@ declare let WifiWizard2: any; // a global that does not need importing
 export class NetworkService {
 
   private connectedWithProvidedSSID$: BehaviorSubject<boolean>;
-  private SSID = "Boeveriestraat 46"; // AndroidWifi
+  private SSID = "AndroidWifi";
 
   constructor(public network: Network, public platform: Platform) {
       this.connectedWithProvidedSSID$ = new BehaviorSubject(undefined);
-      this.emitConnectedToNetworkOnInitialize();
-     
-
       this.network.onConnect().subscribe(async (x) => {
         if(this.network.type === 'wifi' && await this.SSIDEqualsProvidedSSID())
         {
-          
           this.connectedWithProvidedSSID$.next(true);
-        }
-        else {
+        } else {
           this.connectedWithProvidedSSID$.next(false);
         }
-        
       })
-
       this.network.onDisconnect().subscribe(x => {
         this.connectedWithProvidedSSID$.next(false);
       })
@@ -45,23 +38,7 @@ export class NetworkService {
 
 
   private async SSIDEqualsProvidedSSID() {
-    return await WifiWizard2.getConnectedSSID() === this.SSID; 
-  }
-
-  public async emitConnectedToNetworkOnInitialize(): Promise<void> {
-    try {
-      console.log(await WifiWizard2.getConnectedSSID())
-      if(await this.SSIDEqualsProvidedSSID())
-      {
-        this.connectedWithProvidedSSID$.next(true);
-      }
-      else {
-        this.connectedWithProvidedSSID$.next(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-
+    return await WifiWizard2.getConnectedSSID() === this.SSID;
   }
 
 }
