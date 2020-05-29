@@ -52,7 +52,7 @@
         <ion-item-divider></ion-item-divider>
         <ion-row>
             <ion-col size="10" class="ion-padding-start">
-              <ion-row><ion-card-title>{{moviesInView.length}} Titles</ion-card-title></ion-row>
+              <ion-row><ion-card-title>{{movies.length}} Titles</ion-card-title></ion-row>
               <ion-row><ion-card-subtitle>Sorted by date added</ion-card-subtitle></ion-row>
             </ion-col>
             <ion-col align-self-center>
@@ -63,9 +63,9 @@
       </div>
 
 
-      <div *ngIf="moviesInView?.length > 0">
+      <div *ngIf="movies?.length > 0">
 
-          <ion-virtual-scroll [items]="moviesInView" [itemHeight]="calculateApproxHeight"  >
+          <ion-virtual-scroll [items]="movies" [itemHeight]="calculateApproxHeight"  >
 
               <div *virtualItem="let movie" class="virtualDiv">
                   <app-collection-list-item [item]="movie" (deletedMovie)="refreshMovies(slidingItem)"></app-collection-list-item>
@@ -75,8 +75,6 @@
 
       </div>
       
-      <div *ngIf="recommendedMovies"> 
-        <app-tmdb-scrolling-cards [tmdbResults]="recommendedMovies" [title]="'Recommendations'"></app-tmdb-scrolling-cards>
-      </div>
+
     </ion-grid>
 </ion-content>
