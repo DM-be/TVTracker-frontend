@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { BufferedPouchMovie } from 'src/interfaces/BufferedPouchMovie';
-import { PouchService } from 'src/services/pouch/pouch.service';
 import { TmdbService } from 'src/services/tmdb/tmdb.service';
 import { TmdbMovie } from 'src/interfaces/TmdbMovie';
 import { Subscription } from 'rxjs';
@@ -16,16 +14,16 @@ export class DiscoverTvPage {
   public popularTvShows: TmdbTvShow [];
   private pouchInitialisationSubscription: Subscription;
 
-  constructor(private pouchService: PouchService, private tmdbService: TmdbService) {}
+  constructor(private tmdbService: TmdbService) {}
 
   async ngOnInit() {
-    this.pouchInitialisationSubscription = this.pouchService.initialisation$.subscribe(async initialized => {
-      if(initialized)
-      {
-        this.nowAiringTvShows = await this.tmdbService.getOnTheAirTmdbTvShows();
-        this.popularTvShows = await this.tmdbService.getPopularTmdbTvShows();
-      }
-    });
+    // this.pouchInitialisationSubscription = this.pouchService.initialisation$.subscribe(async initialized => {
+    //   if(initialized)
+    //   {
+    //     this.nowAiringTvShows = await this.tmdbService.getOnTheAirTmdbTvShows();
+    //     this.popularTvShows = await this.tmdbService.getPopularTmdbTvShows();
+    //   }
+    // });
     
   }
 

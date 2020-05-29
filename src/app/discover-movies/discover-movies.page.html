@@ -24,7 +24,7 @@
  
 
 
-<app-tmdb-scrolling-cards [tmdbResults]="nowPlayingMovies" [title]="'Now playing'"></app-tmdb-scrolling-cards>
+<app-tmdb-scrolling-cards [tmdbResults]="nowPlayingMovies | async" [title]="'Now playing'"></app-tmdb-scrolling-cards>
 <app-tmdb-scrolling-cards [tmdbResults]="upComingMovies" [title]="'Upcoming'"></app-tmdb-scrolling-cards>
 
 

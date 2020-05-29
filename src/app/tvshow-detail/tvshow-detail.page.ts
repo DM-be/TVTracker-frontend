@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TmdbService } from 'src/services/tmdb/tmdb.service';
-import { PouchService } from 'src/services/pouch/pouch.service';
 import { ActionSheetController } from '@ionic/angular';
 import { TmdbTvShow } from 'src/interfaces/TmdbTvShow';
 import { TmdbTvShowDetailsDTO } from 'src/interfaces/TmdbTvShowDetailsDTO';
@@ -21,7 +20,7 @@ export class TvshowDetailPage implements OnInit {
   public similarTvShows: TmdbTvShow [];
   public pouchTvShow: any; // pouchtvshow // bufferedpouchtvshow (check for icons etc etc)
 
-  constructor(private route: ActivatedRoute, private tmdbService: TmdbService, private pouchService: PouchService, private actionSheetController: ActionSheetController) {}
+  constructor(private route: ActivatedRoute, private tmdbService: TmdbService, private actionSheetController: ActionSheetController) {}
 
   async ngOnInit() {
     const tmdbId = this.route.snapshot.params.id;
@@ -138,9 +137,9 @@ export class TvshowDetailPage implements OnInit {
       qualityProfileId: 1,
       seasons: [{monitored: true,seasonNumber: 1}],
       title: this.tmdbTvShowDetailsDto.name,
-      tvdbId: tvdbIdExternal, 
+      tvdbId: Number.parseInt(tvdbIdExternal, 10),
     }
-      await this.pouchService.addBufferedTvShowToBufferedTvShowCollection(addTvShowDto);
+     // await this.pouchService.addBufferedTvShowToBufferedTvShowCollection(addTvShowDto);
     } catch (error) {
       console.log(error);
     }
@@ -183,10 +182,10 @@ export class TvshowDetailPage implements OnInit {
       qualityProfileId: 1,
       seasons: this.generateSonarrSeasons(this.tmdbTvShowDetailsDto.seasons, false, false),
       title: this.tmdbTvShowDetailsDto.name,
-      tvdbId: tvdbIdExternal,
+      tvdbId:  Number.parseInt(tvdbIdExternal, 10),
       episodes: [{seasonNumber: 1, episodeNumber: 1}]
     }
-      await this.pouchService.addBufferedTvShowToBufferedTvShowCollection(addTvShowDto);
+   //   await this.pouchService.addBufferedTvShowToBufferedTvShowCollection(addTvShowDto);
     } catch (error) {
       console.log(error);
     }

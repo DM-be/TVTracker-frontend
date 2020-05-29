@@ -1,7 +1,7 @@
+
+import { MovieService } from './../../services/movie/movie.service';
+import { RadarrMovie } from './../../interfaces/RadarrMovie';
 import { Component } from '@angular/core';
-import { PouchService } from 'src/services/pouch/pouch.service';
-import { PouchMovie } from 'src/interfaces/PouchMovie';
-import { BufferedPouchMovie } from 'src/interfaces/BufferedPouchMovie';
 
 
 @Component({
@@ -12,21 +12,21 @@ import { BufferedPouchMovie } from 'src/interfaces/BufferedPouchMovie';
 export class CollectionPage  {
 
 
-  public moviesInView: Array<PouchMovie | BufferedPouchMovie>; // make new arrays instead of binding directly... issue in virtual list...
+  public movies: Array<RadarrMovie>; // make new arrays instead of binding directly... issue in virtual list...
 
   public filters: string [] = [];
   public possibleFilters: string [] = ['Downloaded', 'Grabbed', 'Monitored'];
   public filterObject = {};
   public filterType: string;
 
-  constructor(private pouchService: PouchService) {}
+  constructor(private movieService: MovieService) {}
 
   async ngOnInit() {
-   this.moviesInView = [...this.pouchService.getMoviesInView()];
+   this.movies = this.movieService.getMoviesSubject().getValue();
   }
 
   async ionViewWillEnter() {
-    if(this.moviesInView.length !== this.pouchService.getMoviesInView().length)
+    if(this.movies.length !== this.movieService.getMoviesSubject().getValue().length)
     {
       this.refreshMovies();
     }
@@ -39,7 +39,7 @@ export class CollectionPage  {
   // workaround because of failed change detection --> create new array;
   // see https://github.com/ionic-team/ionic/issues/17371
   async refreshMovies() {
-    this.moviesInView = [...this.pouchService.getMoviesInView()]
+    this.movies = [...this.movieService.getMoviesSubject().getValue()];
   }
 
 
@@ -51,11 +51,10 @@ export class CollectionPage  {
     this.filterObject = {...this.filterObject,...{[filter.toLowerCase()]: true}}
     this.filterWithFilterObject();
 
-
   }
 
   public filterWithFilterObject() {
-    this.moviesInView = this.moviesInView.filter((item) => {
+    this.movies = this.movies.filter((item) => {
       for (var key in this.filterObject) {
         if (item[key] === undefined || item[key] != this.filterObject[key])
           return false;
@@ -78,11 +77,11 @@ export class CollectionPage  {
 
   public filterByType() {
 
-    this.moviesInView = this.moviesInView.filter((item) => {
+    this.movies = this.movies.filter((item) => {
      
         if(this.filterType === 'movies')
         {
-          return ((item instanceof PouchMovie || item instanceof BufferedPouchMovie))
+        //  return ((item instanceof RadarrMovie)
         }
 
     });
@@ -97,8 +96,7 @@ export class CollectionPage  {
     this.filters.splice(i, 1);
     this.refreshMovies();
     this.filterWithFilterObject();
-  } 
-  
- 
+  }
+
 
 }

@@ -1,3 +1,6 @@
+import { AddMovieCommand } from './../../patterns/command/AddMovieCommand';
+import { MovieService } from './../../services/movie/movie.service';
+import { Movie } from './../../interfaces/Movie';
 import {
   Component,
   OnInit
@@ -12,21 +15,13 @@ import {
 import {
   TmdbMovie
 } from 'src/interfaces/TmdbMovie';
-import {
-  PouchMovie
-} from 'src/interfaces/PouchMovie';
-import {
-  BufferedPouchMovie
-} from 'src/interfaces/BufferedPouchMovie';
-import {
-  PouchService
-} from 'src/services/pouch/pouch.service';
+
 import {
   ActionSheetController
 } from '@ionic/angular';
 import {
-  AddMovieDTO
-} from 'src/interfaces/AddMovieDTO';
+  AddMovieCommandOptions
+} from 'src/interfaces/AddMovieCommandOptions';
 
 import { TmdbService } from 'src/services/tmdb/tmdb.service';
 import { TmdbMovieResultDTO } from 'src/interfaces/TmdbMovieResultDTO';
@@ -40,137 +35,126 @@ import { TmdbGenre } from 'src/interfaces/TmdbGenre';
 })
 export class MovieDetailPage implements OnInit {
 
-
-  public tmdbMovieDetailsDto: TmdbMovieDetailsDTO;
   public similarMovies: TmdbMovie[];
-  public pouchMovie: PouchMovie | BufferedPouchMovie;
+  public movie: TmdbMovie;
+  public isInCollection: boolean;
 
-  constructor(private route: ActivatedRoute, private tmdbService: TmdbService, private pouchService: PouchService, private actionSheetController: ActionSheetController) {}
+
+  constructor(private route: ActivatedRoute, private tmdbService: TmdbService, private movieService: MovieService, private actionSheetController: ActionSheetController) {}
 
   async ngOnInit() {
     const tmdbId = this.route.snapshot.params.id;
-    console.log(tmdbId);
-    this.pouchMovie = this.pouchService.getMovie(Number(tmdbId));
-    console.log(this.tmdbMovieDetailsDto);
-    this.tmdbMovieDetailsDto = await this.tmdbService.getMovieDetails(tmdbId);
+    const movieDetails = await this.tmdbService.getMovieDetails(tmdbId);
+    this.movie = new TmdbMovie(movieDetails as TmdbMovieResultDTO);
+    this.movie.movieDetails = movieDetails;
     this.similarMovies = await this.tmdbService.getSimilarMovies(tmdbId);
-  
+    this.isInCollection = await this.movieService.isInCollection(tmdbId as number)
+    this.init();
   }
 
-  public isBufferedPouchMovie() {
-    return (this.pouchMovie instanceof BufferedPouchMovie);
-  }
+  public init() {
 
-  public isPouchMovie() {
-    return (this.pouchMovie instanceof PouchMovie);
-  }
 
-  //replace with trailer thumbnail or? ...
-  getBackdrop() {
-    if (this.tmdbMovieDetailsDto) {
 
-      return `https://image.tmdb.org/t/p/w780${this.tmdbMovieDetailsDto.backdrop_path}`;
-    }
-  }
-
-  getPoster() {
-    if (this.tmdbMovieDetailsDto) {
-
-      return `https://image.tmdb.org/t/p/w154${this.tmdbMovieDetailsDto.poster_path}`;
-    }
   }
 
  
 //todo: think about download grabbed icons etc etc
   getCloudIconName() {
-    if (this.pouchMovie.downloaded) {
+    if (this.isInCollection) {
       return "cloud-done";
     }
-    else if(this.pouchMovie.grabbed)
-    {
-      return "cloud-download";
-    }
+    // else if(this.pouchMovie.grabbed)
+    // {
+    //   return "cloud-download";
+    // }
   }
 
 
   async removeFromBufferedMovies() {
     try {
-      this.pouchService.deleteMovieFromPouchAndLocal(this.pouchMovie);
-      this.pouchMovie = undefined;
     } catch (error) {
+      console.log(error);
     }
 
 
   }
   generateReleaseDateRuntimeGenreString() {
-    let string = ``;
-    const date = new Date(this.tmdbMovieDetailsDto.release_date);
-    string += date.getFullYear().toString();
-    string += "  "
-    string += this.timeConvert(this.tmdbMovieDetailsDto.runtime);
-    string += "  "
-    for (let i = 0; i < this.tmdbMovieDetailsDto.genres.length; i++) {
-      const genre = this.tmdbMovieDetailsDto.genres[i] as TmdbGenre;
-      string += genre.name;
-      if (i != this.tmdbMovieDetailsDto.genres.length - 1) {
-        string += ", ";
+    let str = ``;
+    const date = new Date(this.movie.movieDetails.release_date);
+    str += date.getFullYear().toString();
+    str += "  "
+    str += this.timeConvert(this.movie.movieDetails.runtime);
+    str += "  "
+    for (let i = 0; i < this.movie.movieDetails.genres.length; i++) {
+      const genre = this.movie.movieDetails.genres[i] as TmdbGenre;
+      str += genre.name;
+      if (i != this.movie.movieDetails.genres.length - 1) {
+        str += ", ";
       }
 
     }
-    return string;
+    return str;
   }
 
-  private timeConvert(n) {
-    var num = n;
-    var hours = (num / 60);
-    var rhours = Math.floor(hours);
-    var minutes = (hours - rhours) * 60;
-    var rminutes = Math.round(minutes);
+
+  // move to helper class
+  private timeConvert(n): string {
+    const num = n;
+    const hours = (num / 60);
+    const rhours = Math.floor(hours);
+    const minutes = (hours - rhours) * 60;
+    const rminutes = Math.round(minutes);
     return rhours + "h " + rminutes + "min";
   }
 
 
-  async presentActionSheet() {
+  public async presentActionSheet(): Promise<void> {
     const addButtons = [{
       text: 'Add to collection',
       icon: 'add',
-      handler: async () => 
-       await this.addToBufferedMovies(false)
+      handler: async () => await this.addMovieToCollection(false)
     }, {
       text: 'Add and download',
       icon: 'cloud-download',
-      handler: async () => await this.addToBufferedMovies(true)
+      handler: async () => await this.addMovieToCollection(true)
     }, {
       text: 'Cancel',
       icon: 'close',
       role: 'cancel',
       handler: () => {
-        console.log('Cancel clicked');
       }
     }]
     const actionSheet = await this.actionSheetController.create({
-      header: this.tmdbMovieDetailsDto.tagline || this.tmdbMovieDetailsDto.title,
+      header: this.movie.movieDetails.tagline || this.movie.movieDetails.title,
       buttons: addButtons
     });
     await actionSheet.present();
   }
 
-  async addToBufferedMovies(searchForMovie: boolean) {
-    const addMovieDto: AddMovieDTO = {
-      addOptions: {
-        searchForMovie: searchForMovie
-      },
-      monitored: false,
-      qualityProfileId: 6,
-      tmdbId: this.tmdbMovieDetailsDto.id
-    };
-    this.pouchMovie = new BufferedPouchMovie(this.tmdbMovieDetailsDto as TmdbMovieResultDTO, addMovieDto);
-    await this.pouchService.addBufferedMovieToBufferedMovieCollection(this.pouchMovie);
-   // this.bufferedPouchMovie = this.pouchService.getBufferedPouchMovie(this.tmdbMovieDetailsDto.id);
-    return Promise.resolve(true);
 
+  
+  async addMovieToCollection(searchForMovie: boolean): Promise<boolean> {
+
+    try {
+      const addMovieCommandOptions: AddMovieCommandOptions = {
+        addOptions: {
+          searchForMovie
+        },
+        monitored: false,
+        qualityProfileId: 6,
+        tmdbId: this.movie.tmdbId,
+      };
+      const command = new AddMovieCommand(this.movieService, addMovieCommandOptions, this.movie);
+      await command.execute();
+      return Promise.resolve(true);
+      console.log("added movie!")
+    } catch (error) {
+      console.log(error);
+    }
+  
   }
-
+  
 
 
 }

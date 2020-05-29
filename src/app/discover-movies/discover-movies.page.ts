@@ -1,8 +1,8 @@
+import { AddMovieCommand } from './../../patterns/command/AddMovieCommand';
+import { MovieService } from './../../services/movie/movie.service';
 import { Component } from '@angular/core';
-import { PouchService } from 'src/services/pouch/pouch.service';
 import { TmdbMovie } from 'src/interfaces/TmdbMovie';
-import { AddMovieDTO } from 'src/interfaces/AddMovieDTO';
-import { BufferedPouchMovie } from 'src/interfaces/BufferedPouchMovie';
+import { AddMovieCommandOptions } from 'src/interfaces/AddMovieCommandOptions';
 import { LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { TmdbService } from 'src/services/tmdb/tmdb.service';
@@ -18,43 +18,37 @@ export class DiscoverMoviesPage {
   public nowPlayingMovies: TmdbMovie [];
   public upComingMovies: TmdbMovie [];
 
-  private pouchInitialisationSubscription: Subscription;
-  
-
-  constructor(private tmdbService: TmdbService, private pouchService: PouchService, private loadingController: LoadingController) {
+  constructor(private tmdbService: TmdbService, private movieService: MovieService, private loadingController: LoadingController) {
   }
 
   async ngOnInit() {
-    this.pouchInitialisationSubscription = this.pouchService.initialisation$.subscribe(async initialized => {
-      if(initialized)
+    await this.initializeTmdbMovies();
+  }
+
+  async addMovieToCollection(tmdbMovie: TmdbMovie) {
+
+    const addMovieCommandOptions: AddMovieCommandOptions = {
+      addOptions: {searchForMovie: false},
+      monitored: false,
+      qualityProfileId: 6,
+      tmdbId: tmdbMovie.tmdbId
+    };
+    const command = new AddMovieCommand(this.movieService, addMovieCommandOptions, tmdbMovie );
+    command.execute();
+    console.log("added movie!")
+  }
+  
+
+  private async initializeTmdbMovies() {
+    try {
+      if(await this.movieService.dataLayerInitialisation())
       {
         this.nowPlayingMovies = await this.tmdbService.getNowPlayingTmdbMovies();
         this.upComingMovies = await this.tmdbService.getUpcomingTmdbMovies();
       }
-    });
-    
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  ngOnDestroy() {
-    this.pouchInitialisationSubscription.unsubscribe();
-  }
-
-
-
-  async addToBufferedMovies(movie: TmdbMovie) {
-    const addMovieDto: AddMovieDTO = {
-      addOptions: {searchForMovie: false},
-      monitored: false,
-      qualityProfileId: 6,
-      tmdbId: movie.id
-    };
-    
-    const bufferedPouchMovie = new BufferedPouchMovie(movie as TmdbMovieResultDTO, addMovieDto);
-    await this.pouchService.addBufferedMovieToBufferedMovieCollection(bufferedPouchMovie);
-    console.log("added buffered movie!")
-
-
-
-  }
-  
 }
