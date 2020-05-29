@@ -18,6 +18,8 @@ export class NetworkService {
 
   constructor(public network: Network, public platform: Platform) {
       this.connectedWithProvidedSSID$ = new BehaviorSubject(undefined);
+      console.log('created')
+      this.emitConnectedToNetworkOnInitialize();
       this.network.onConnect().subscribe(async (x) => {
         if(this.network.type === 'wifi' && await this.SSIDEqualsProvidedSSID())
         {
@@ -41,4 +43,19 @@ export class NetworkService {
     return await WifiWizard2.getConnectedSSID() === this.SSID;
   }
 
+  public async emitConnectedToNetworkOnInitialize(): Promise<void> {
+    try {
+      console.log(await WifiWizard2.getConnectedSSID())
+      if(await this.SSIDEqualsProvidedSSID())
+      {
+        this.connectedWithProvidedSSID$.next(true);
+      }
+      else {
+        this.connectedWithProvidedSSID$.next(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
 }
