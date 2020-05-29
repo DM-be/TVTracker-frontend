@@ -6,7 +6,7 @@ export interface PouchMovieDTO {
     downloaded: boolean;
     monitored: boolean;
     tmdbId: number;
-    id: number;
+    radarrId: number; // TODO set in backend
     _id: string;
     _rev: string;
     images: RadarrImage [];

@@ -1,27 +1,29 @@
-import { AddOptions } from './AddOptions';
-import { TmdbMovie } from './TmdbMovie';
-import { AddMovieDTO } from './AddMovieDTO';
-import { TmdbMovieResultDTO } from './TmdbMovieResultDTO';
+// import { TmdbMovie } from 'src/interfaces/TmdbMovie';
+// import { AddMovieCommandOptions } from './AddMovieCommandOptions';
+// import { AddOptions } from './AddOptions';
+// import { TmdbMovie } from './TmdbMovie';
+// import { TmdbMovieResultDTO } from './TmdbMovieResultDTO';
+// import { Movie } from './Movie';
 
 
-export class BufferedPouchMovie extends TmdbMovie {
-    tmdbId: number;
-    monitored: boolean;
-    qualityProfileId: number;
-    addOptions: AddOptions
-    _id: string;
-    _rev?: string;
+// export class BufferedPouchMovie extends TmdbMovie {
+//     _id: string;
+//     addMovieCommandOptions: AddMovieCommandOptions;
 
-    grabbed?: boolean;
-    downloaded?: boolean; // remove
-
-    constructor(tmdbMovieResultDto: TmdbMovieResultDTO, addMovieDto: AddMovieDTO) {
-        super(tmdbMovieResultDto);
-        this.tmdbId = tmdbMovieResultDto.id;
-        this.monitored = addMovieDto.monitored;
-        this.qualityProfileId = addMovieDto.qualityProfileId;
-        this.addOptions = addMovieDto.addOptions;
-        this._id = tmdbMovieResultDto.id.toString();
-    }
+//     constructor(tmdbId: string, addMovieCommandOptions: AddMovieCommandOptions) {
+//         this._id = tmdbId;
+//     }
+//     title: string;
+//     tmdbId: number;
+//     overview: string;
+//     poster: string;
+//     backDrop: string;
     
-}
+//     setPoster(posterPath: string): void {
+//         throw new Error("Method not implemented.");
+//     }
+//     setBackDrop(backDropPath: string): void {
+//         throw new Error("Method not implemented.");
+//     }
+
+// }
