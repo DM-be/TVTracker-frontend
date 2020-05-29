@@ -25,7 +25,8 @@ export class AddMovieCommand implements Command {
 
         const { tmdbId, monitored, qualityProfileId, addOptions } = addMovieCommandOptions;
         const { overview, poster, backDrop } = tmdbMovie;
-        const radarrImages: RadarrImage [] = [];
+        const radarrImages: RadarrImage [] = [ {coverType: 'poster', url: '' } , {coverType: 'fanart', url: '' }];
+        
         radarrImages[0].coverType = "poster";
         radarrImages[0].url = poster;
         radarrImages[1].coverType = "fanart"; // check backend if this is also backdrop

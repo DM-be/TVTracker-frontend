@@ -36,8 +36,8 @@ export class MovieService {
         return this.dataLayerService.dataLayer.getMovie(tmdbId);
     }
 
-    public async dataLayerInitialisation(): Promise<boolean> {
-        return await this.dataLayerService.dataLayer.initializedDataLayer$.toPromise();
+    public dataLayerInitialisation(): BehaviorSubject<boolean> {
+        return this.dataLayerService.dataLayer.initializedDataLayer$;
     }
 
     public isInCollection(tmdbId: number): boolean {
