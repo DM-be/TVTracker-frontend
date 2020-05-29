@@ -1,10 +1,11 @@
+import cordovaSqlitePlugin from 'pouchdb-adapter-cordova-sqlite';
 import { environment } from './../../environments/environment.prod';
-import { PouchDB } from 'pouchdb';
-import { RadarrMovie } from './../../interfaces/RadarrMovie';
 import { RadarrMovie } from 'src/interfaces/RadarrMovie';
 import { BehaviorSubject } from 'rxjs';
 import { DataLayer } from './DataLayer';
 import { Movie } from 'src/interfaces/Movie';
+import PouchDB from 'pouchdb';
+//PouchDB.plugin(cordovaSqlitePlugin);
 
 export class PouchDataLayer extends DataLayer {
 
@@ -36,7 +37,7 @@ export class PouchDataLayer extends DataLayer {
 
 
     async initializeMovies(): Promise<BehaviorSubject<RadarrMovie[]>> {
-        this.movieCollection = new PouchDB('movieCollection.db', {adapter: 'cordova-sqlite'}); // {adapter:'cordova-sqlite'})
+        this.movieCollection = new PouchDB('movieCollection.db'); // {adapter:'cordova-sqlite'})
         this.syncMovieCollection();
         return new BehaviorSubject(await this.getMoviesInMovieCollection());
     }

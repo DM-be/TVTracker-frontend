@@ -7,7 +7,7 @@ export abstract class DataLayer {
 
     private _movies$: BehaviorSubject<RadarrMovie []>;
     private _tvShows$: BehaviorSubject<object []>;
-    private _connectedToLocalNetwork$?: Observable<boolean>;
+    private _connectedToLocalNetwork$?: BehaviorSubject<boolean>;
     private _initializedDataLayer$: BehaviorSubject<boolean>;
 
     abstract initializeMovies(): Promise<BehaviorSubject<RadarrMovie []>>;
@@ -17,6 +17,7 @@ export abstract class DataLayer {
     constructor(private networkService?: NetworkService) {
         if(networkService)
         {
+            
             this._connectedToLocalNetwork$ = this.networkService.getNetworkStatus();
         }
         this.initializeDatalayer();
@@ -33,7 +34,8 @@ export abstract class DataLayer {
     }
 
     get connectedToLocalNetwork$(): BehaviorSubject<boolean> {
-        return this.connectedToLocalNetwork$;
+        
+        return this._connectedToLocalNetwork$;
     }
 
     get initializedDataLayer$(): BehaviorSubject<boolean> {
@@ -45,6 +47,7 @@ export abstract class DataLayer {
         try {
             this._movies$ = await this.initializeMovies();
             this._tvShows$ = await this.initializeTvShows();
+            this._initializedDataLayer$ = new BehaviorSubject<boolean>(false);
             this.emitInitializedDataLayer$();
             this.onInit();
         } catch (error) {
@@ -61,6 +64,5 @@ export abstract class DataLayer {
     abstract removeMovie(tmdbId: number): Promise<void>;
     abstract updateMovie(tmdbId: number): Promise<void>;
     abstract getMovie(tmdbId: number): RadarrMovie;
-    abstract getMovies(): BehaviorSubject<RadarrMovie []>;
     abstract movieIsInCollection(tmdbId: number): boolean;
 }
