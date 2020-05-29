@@ -28,7 +28,7 @@ export class CollectionPage  {
   // see https://github.com/ionic-team/ionic/issues/17371
   }
 
-  private calculateApproxHeight() {
+  public calculateApproxHeight() {
     return ((window.innerWidth / 4.5) * 1.5 + 11);
   }
 
