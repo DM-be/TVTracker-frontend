@@ -5,35 +5,29 @@ export interface RadarrMovie {
 
     _id?: string; // maybe decorate the class with per data layer specifics????
     _deleted?: boolean;
-
+    _rev?: string;
 
     grabbed: boolean; // custom
-    downloaded: boolean; 
+    downloaded: boolean;
     monitored: boolean;
     overview: string;
     title: string;
     images: RadarrImage [];
     addOptions: AddOptions; // delete property after successfull addding
 
-
-   
- //   sortTitle: string;
- //   sizeOnDisk: number;
+    sortTitle?: string;
+    sizeOnDisk?: number;
     status?: string;
-   
     inCinemas?: string;
- 
- //   website: string;
-   
+    website?: string;
     year?: number;
     hasFile?: boolean;
     youTubeTrailerId?: string;
     studio?: string;
     path?: string;
     profileId?: number;
- 
-//    minimumAvailability: string;
- //   runtime: number;
+    minimumAvailability?: string;
+    runtime?: number;
     lastInfoSync?: string;
     cleanTitle?: string;
     imdbId?: string;

@@ -3,14 +3,14 @@ import { TmdbTvShowResultDTO } from './TmdbTvShowResultDTO';
 
 
 export class TmdbTvShow {
-    id: number;
+    tmdbId: number;
     overview: string;
     video: boolean;
     vote_average: number;
     vote_count: number;
     release_date: string;
     genre_ids: number [];
-    popularity: number
+    popularity: number;
     poster_path? : string;
     backdrop_path? : string;
     poster?: string;
@@ -18,7 +18,7 @@ export class TmdbTvShow {
     name: string; 
 
     constructor(tmdbTvShowResultDto: TmdbTvShowResultDTO) {
-        this.id = tmdbTvShowResultDto.id;
+        this.tmdbId = tmdbTvShowResultDto.id;
         this.overview = tmdbTvShowResultDto.overview;
         this.poster_path = tmdbTvShowResultDto.poster_path;
         this.backdrop_path = tmdbTvShowResultDto.backdrop_path;
