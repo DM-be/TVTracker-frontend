@@ -32,6 +32,8 @@ export class CollectionListItemComponent  {
     }
   }
 
+  
+
 
   public async deleteMovie(item: IonItemSliding) {
     if(this.isRadarrMovie())

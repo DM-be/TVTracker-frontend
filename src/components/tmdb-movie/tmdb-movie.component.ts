@@ -9,7 +9,7 @@ import { TmdbMovie } from 'src/interfaces/TmdbMovie';
 export class TmdbMovieComponent implements OnInit {
 
 
-  @Input() public tmdbMovie: TmdbMovie
+  @Input() public tmdbMovie: TmdbMovie;
   
   constructor() { }
 

@@ -11,7 +11,7 @@
     <ion-col size="3">
       <ion-card>
         <ion-img [style.opacity]="loaded ? 1 : 0"
-        (ionImgDidLoad)="loaded = true" src="{{item.getPoster()}}"></ion-img>
+        (ionImgDidLoad)="loaded = true" src="{{item.images[0].url}}"></ion-img>
       </ion-card>
     </ion-col >
     <ion-col align-self-start class="ion-padding-start">
@@ -25,7 +25,7 @@
       <ion-row class="averageVoteRow" align-items-center>
                
               <ion-icon name="star" size="small"></ion-icon>
-              {{item.vote_average}}
+              {{6}}
       </ion-row>
       <ion-item-divider></ion-item-divider>
       <ion-row >
@@ -42,7 +42,7 @@
   <ion-item-option color="primary" (click)="updateMonitoredStatus()">
     <ion-icon slot="icon-only" [name]="item.monitored ? 'eye-off' : 'eye'"></ion-icon>
   </ion-item-option>
-  <ion-item-option color="success" *ngIf="!item.downloaded && !isBufferedPouchMovie() ">
+  <ion-item-option color="success" *ngIf="!item.downloaded ">
     <ion-icon slot="icon-only" name="cloud-download"></ion-icon>
   </ion-item-option>
 </ion-item-options>

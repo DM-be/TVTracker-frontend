@@ -5,7 +5,7 @@
       <ion-img  [style.opacity]="loaded ? 1 : 0"
 
       (ionImgDidLoad)="loaded = true" 
-      src="{{tmdbMovie.getPoster()}}">
+      src="{{tmdbMovie.poster}}">
       </ion-img >
       
       <ion-spinner [style.display]="loaded ? 'none' : 'block'"></ion-spinner>

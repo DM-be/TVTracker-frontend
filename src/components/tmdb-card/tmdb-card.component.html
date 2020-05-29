@@ -15,7 +15,7 @@
       <div class="img-container">
           <ion-img  [style.opacity]="loaded ? 1 : 0"
           (ionImgDidLoad)="loaded = true" 
-          src="{{tmdbResult.getPoster()}}">
+          src="{{tmdbResult.poster}}">
           </ion-img >
           <ion-spinner [style.display]="loaded ? 'none' : 'block'"></ion-spinner>        
       </div>
