@@ -1,3 +1,4 @@
+import { DatalayerService } from './../datalayer/datalayer.service';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from './../../environments/environment';
 import { ConcreteDataLayerFactory } from '../../patterns/factory/ConcreteDataLayerFactory';
@@ -12,33 +13,37 @@ import { first } from 'rxjs/operators';
 })
 export class MovieService {
 
-    private dataLayer: DataLayer;
 
-    constructor() {
-        const dataLayerFactory = new ConcreteDataLayerFactory();
-        this.dataLayer = dataLayerFactory.createDataLayer(environment.selectedDataLayer);
+
+    constructor(private dataLayerService: DatalayerService) {
+
     }
 
-    public addMovie(radarrMovie: RadarrMovie) {
-        this.dataLayer.addMovie(radarrMovie);
+    public async addMovie(radarrMovie: RadarrMovie): Promise<void> {
+        try {
+            await this.dataLayerService.dataLayer.addMovie(radarrMovie);
+        } catch (error) {
+            console.log(error);
+        }
+       
     }
 
-    public getMovies(): BehaviorSubject<RadarrMovie []> {
-        return this.dataLayer.movies$;
+    public getMoviesSubject(): BehaviorSubject<RadarrMovie []> {
+        return this.dataLayerService.dataLayer.movies$;
     }
 
     public getMovie(tmdbId: number): RadarrMovie {
-        return this.dataLayer.getMovie(tmdbId);
+        return this.dataLayerService.dataLayer.getMovie(tmdbId);
     }
 
     public async dataLayerInitialisation(): Promise<boolean> {
-        return await this.dataLayer.initializedDataLayer$.toPromise();
+        return await this.dataLayerService.dataLayer.initializedDataLayer$.toPromise();
+    }
+
+    public isInCollection(tmdbId: number): boolean {
+        return this.dataLayerService.dataLayer.movieIsInCollection(tmdbId);
     }
 
 
-    private syncMovieCollection() {
-        this.moviesLiveReplication = this.movieCollection.replicate.from(this.BACKEND_URL + 'movies', this.POUCH_LIVE_RETRY).on('change', (info) => {
-          this.handleChangesFromRemotePouch(info);
-        });
-      }
+
 }
