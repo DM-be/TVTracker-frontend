@@ -11,9 +11,14 @@ export class AddMovieCommand implements Command {
     constructor(private movieService: MovieService, private addMovieCommandOptions: AddMovieCommandOptions, private tmdbMovie: TmdbMovie) {
     }
 
-    execute(): Promise<void> {
-        const radarrMovie = this.generateRaddarMovie(this.addMovieCommandOptions, this.tmdbMovie);
-        this.movieService.addMovie(radarrMovie);
+    async execute(): Promise<void> {
+        try {
+            const radarrMovie = this.generateRaddarMovie(this.addMovieCommandOptions, this.tmdbMovie);
+            await this.movieService.addMovie(radarrMovie);
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
 
     generateRaddarMovie(addMovieCommandOptions: AddMovieCommandOptions, tmdbMovie: TmdbMovie): RadarrMovie {
