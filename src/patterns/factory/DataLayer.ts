@@ -15,6 +15,8 @@ export abstract class DataLayer {
 
 
     constructor(private networkService?: NetworkService) {
+        this._initializedDataLayer$ = new BehaviorSubject<boolean>(false);
+        this._movies$ = new BehaviorSubject<RadarrMovie []>([]);
         if(networkService)
         {
             
@@ -46,8 +48,7 @@ export abstract class DataLayer {
     private async initializeDatalayer(): Promise<void> {
         try {
             this._movies$ = await this.initializeMovies();
-            this._tvShows$ = await this.initializeTvShows();
-            this._initializedDataLayer$ = new BehaviorSubject<boolean>(false);
+          //  this._tvShows$ = await this.initializeTvShows();
             this.emitInitializedDataLayer$();
             this.onInit();
         } catch (error) {

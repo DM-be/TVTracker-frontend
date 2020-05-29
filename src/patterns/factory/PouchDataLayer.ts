@@ -76,6 +76,7 @@ export class PouchDataLayer extends DataLayer {
 
   private syncMovieCollection() {
     this.connectedToLocalNetwork$.subscribe((connected) => {
+      console.log(connected)
         if(connected)
         {
         this.movieReplication = this.movieCollection.sync(this.BACKEND_URL + 'movies', this.POUCH_LIVE_RETRY)
@@ -113,7 +114,11 @@ export class PouchDataLayer extends DataLayer {
 
   private async cancelReplication(): Promise<void> {
     try {
-      await this.movieReplication.cancel();
+      if(this.movieReplication)
+      {
+        await this.movieReplication.cancel();
+      }
+   
       console.log("cancelled the live replication because we lost ssid access");
     } catch (error) {
       console.log(error);
