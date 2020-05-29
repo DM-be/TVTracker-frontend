@@ -12,11 +12,9 @@ export class PouchDataLayer extends DataLayer {
 
     private movieCollection: PouchDB;
     private movieReplication: any;
+    private POUCH_LIVE_RETRY = { live: true, retry: false};
 
-    private BACKEND_URL = environment.BACKEND_URL;
-    private POUCH_LIVE_RETRY = { live: true};
-
-
+    
     public async addMovie(radarrMovie: RadarrMovie): Promise<void> {
       try {
         radarrMovie._id = radarrMovie.tmdbId.toString();
@@ -75,40 +73,57 @@ export class PouchDataLayer extends DataLayer {
   }
 
   private syncMovieCollection() {
-    this.connectedToLocalNetwork$.subscribe((connected) => {
-      console.log(connected)
-        if(connected)
-        {
-        this.movieReplication = this.movieCollection.sync(this.BACKEND_URL + 'movies', this.POUCH_LIVE_RETRY)
-        .on('change', info => this.handleRemoteMovieChanges(info));
-        }
-         else if (!connected) { // ignore the first undefined --> refactor with rxjs course (take first defined value)
-            this.cancelReplication();
-         }
+  
+    this.movieReplication = this.movieCollection.sync(environment.BACKEND_URL + 'movies', this.POUCH_LIVE_RETRY)
+    .on('change', info => this.handleRemoteMovieChanges(info)
+    ).on('error', (err)=>{
+      // totally unhandled error (shouldn't happen)
+      console.log(err);
+    }).on('paused', (err) =>{
+      console.log('paused');
+      if (err) {
+        alert(`No connection! ${err}`);
+      }});
 
-    });
+    console.log(this.movieReplication);
+
+    // this.connectedToLocalNetwork$.subscribe((connected) => {
+    //   console.log(connected)
+    //     if(connected)
+    //     {
+    /// add replication here outside of testing
+    //     }
+    //      else if (!connected) { // ignore the first undefined --> refactor with rxjs course (take first defined value)
+    //       //  this.cancelReplication();
+    //      }
+
+    // });
   }
 
 
+  //TODO: add interface
   private async handleRemoteMovieChanges(info: any) {
-    const changedDocsFromRemote = info.docs as RadarrMovie [];
-    changedDocsFromRemote.forEach( async (radarrMovie: RadarrMovie) => {
-    const movies = this.movies$.getValue();
-    if (radarrMovie._deleted) {
-        const removedIndex = movies.findIndex(m => m.tmdbId === radarrMovie.tmdbId);
-        this.movies$.next(movies.splice(removedIndex, 1));
-        return;
-      }
-    const updatedMovieIndex = movies.findIndex(m => m.tmdbId === radarrMovie.tmdbId);
-    if (updatedMovieIndex !== -1) {
-        const updatedMovie = Object.assign(movies[updatedMovieIndex], radarrMovie) as RadarrMovie;
-        movies[updatedMovieIndex] = updatedMovie;
-        this.movies$.next(movies);
-      } else {
-        movies.unshift(radarrMovie);
-        this.movies$.next(movies);
-      }
-    });
+    if(info.docs)
+    {
+      const changedDocsFromRemote = info.docs as RadarrMovie [];
+      changedDocsFromRemote.forEach( async (radarrMovie: RadarrMovie) => {
+      const movies = this.movies$.getValue();
+      if (radarrMovie._deleted) {
+          const removedIndex = movies.findIndex(m => m.tmdbId === radarrMovie.tmdbId);
+          this.movies$.next(movies.splice(removedIndex, 1));
+          return;
+        }
+      const updatedMovieIndex = movies.findIndex(m => m.tmdbId === radarrMovie.tmdbId);
+      if (updatedMovieIndex !== -1) {
+          const updatedMovie = Object.assign(movies[updatedMovieIndex], radarrMovie) as RadarrMovie;
+          movies[updatedMovieIndex] = updatedMovie;
+          this.movies$.next(movies);
+        } else {
+          movies.unshift(radarrMovie);
+          this.movies$.next(movies);
+        }
+      });
+    }
   }
 
 

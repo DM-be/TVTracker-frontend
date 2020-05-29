@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   selectedDataLayer: 'pouchdb',
+  BACKEND_URL: 'http://192.168.10.186:5984/'
 };
 
 /*
