@@ -1,6 +1,6 @@
+import { RadarrMovie } from 'src/interfaces/RadarrMovie';
 import { Component, OnInit, Input } from '@angular/core';
-import { PouchMovie } from 'src/interfaces/PouchMovie';
-import { BufferedPouchMovie } from 'src/interfaces/BufferedPouchMovie';
+
 
 @Component({
   selector: 'app-movies-collection',
@@ -9,7 +9,7 @@ import { BufferedPouchMovie } from 'src/interfaces/BufferedPouchMovie';
 })
 export class MoviesCollectionComponent implements OnInit {
 
-  @Input() pouchMovies: PouchMovie | BufferedPouchMovie [];
+  @Input() movies: RadarrMovie [];
   @Input() title: string;
 
   constructor() { }

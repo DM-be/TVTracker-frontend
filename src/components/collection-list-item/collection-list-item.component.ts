@@ -1,7 +1,8 @@
+import { MovieService } from './../../services/movie/movie.service';
+import { RadarrMovie } from 'src/interfaces/RadarrMovie';
 import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
-import { PouchMovie } from 'src/interfaces/PouchMovie';
-import { BufferedPouchMovie } from 'src/interfaces/BufferedPouchMovie';
-import { PouchService } from 'src/services/pouch/pouch.service';
+
+
 import { IonItemSliding } from '@ionic/angular';
 
 
@@ -10,45 +11,37 @@ import { IonItemSliding } from '@ionic/angular';
   templateUrl: './collection-list-item.component.html',
   styleUrls: ['./collection-list-item.component.scss'],
 })
-export class CollectionListItemComponent implements OnInit {
+export class CollectionListItemComponent  {
 
 
 
-  @Input() public item: PouchMovie | BufferedPouchMovie// only movie for now but could also be tvshow | PouchTvShow
+  @Input() public item: RadarrMovie; // only movie for now but could also be tvshow | PouchTvShow
   @Output() deletedMovie = new EventEmitter<any>();
   public loaded = false;
 
-  constructor(private pouchService: PouchService) { }
+  constructor(private movieService: MovieService) { }
 
-  ngOnInit() {
-    console.log(this.item);
-    
-  }
-  public isBufferedPouchMovie() {
-    return (this.item instanceof BufferedPouchMovie);
+  public isRadarrMovie() {
+    return true;
   }
 
   public async updateMonitoredStatus() {
-    if(this.isBufferedPouchMovie())
+    if(this.isRadarrMovie())
     {
       this.item.monitored = !this.item.monitored;
-      await this.pouchService.updateBufferedMovieInBufferedMovieCollection(this.item as BufferedPouchMovie);
     }
   }
 
- 
 
   public async deleteMovie(item: IonItemSliding) {
-    if(this.isBufferedPouchMovie())
+    if(this.isRadarrMovie())
     {
       try {
-        await this.pouchService.deleteMovieFromPouchAndLocal(this.item);
         await item.close();
         this.deletedMovie.next();
       } catch (error) {
         console.log(error);
       }
-    
     }
   }
 

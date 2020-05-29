@@ -1,6 +1,6 @@
+import { RadarrMovie } from 'src/interfaces/RadarrMovie';
 import { Component, OnInit, Input } from '@angular/core';
-import { PouchMovie } from 'src/interfaces/PouchMovie';
-import { BufferedPouchMovie } from 'src/interfaces/BufferedPouchMovie';
+
 
 @Component({
   selector: 'app-pouch-movie',
@@ -11,7 +11,7 @@ export class PouchMovieComponent implements OnInit {
 
 
   public loaded = false;
-  @Input() public pouchMovie: PouchMovie | BufferedPouchMovie;
+  @Input() public movie: RadarrMovie;
   constructor() { }
 
   ngOnInit() {
@@ -19,7 +19,7 @@ export class PouchMovieComponent implements OnInit {
   }
 
   isBufferedPouchMovie() {
-    return this.pouchMovie instanceof BufferedPouchMovie;
+    return this.movie._id !== undefined;
   }
 
 

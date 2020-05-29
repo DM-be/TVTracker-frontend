@@ -1,8 +1,7 @@
+import { AddMovieCommandOptions } from './../../interfaces/AddMovieCommandOptions';
+import { MovieService } from './../../services/movie/movie.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { TmdbMovie } from 'src/interfaces/TmdbMovie';
-import { PouchService } from 'src/services/pouch/pouch.service';
-import { AddMovieDTO } from 'src/interfaces/AddMovieDTO';
-import { BufferedPouchMovie } from 'src/interfaces/BufferedPouchMovie';
 import {  TmdbMovieResultDTO } from 'src/interfaces/TmdbMovieResultDTO';
 import { ActivatedRoute } from '@angular/router';
 import { TmdbTvShow } from 'src/interfaces/TmdbTvShow';
@@ -21,13 +20,13 @@ export class TmdbCardComponent implements OnInit {
   @Input() tmdbResult: TmdbMovie | TmdbTvShow;
   public inCollection: boolean;
 
-  constructor(private pouchService: PouchService, private activatedRoute: ActivatedRoute) {
+  constructor(private movieService: MovieService, private activatedRoute: ActivatedRoute) {
     
 
     this.activatedRoute.url.subscribe(x => {
       if(this.tmdbResult)
       {
-        this.inCollection = this.pouchService.isInCollectionOrBufferedMovieCollection(this.tmdbResult.id);
+        this.inCollection = this.movieService.isInCollection(this.tmdbResult.tmdbId);// aslo check with tvshow service!
       }
      
     });
@@ -35,13 +34,13 @@ export class TmdbCardComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.inCollection = this.pouchService.isInCollectionOrBufferedMovieCollection(this.tmdbResult.id);
+    this.inCollection = this.movieService.isInCollection(this.tmdbResult.tmdbId); // aslo check with tvshow service!
     if(this.tmdbResult instanceof TmdbMovie)
     {
-      this.routerLink = `/movie-detail/${this.tmdbResult.id}`;
+      this.routerLink = `/movie-detail/${this.tmdbResult.tmdbId}`;
     } 
     else {
-      this.routerLink = `/tvshow-detail/${this.tmdbResult.id}`;
+      this.routerLink = `/tvshow-detail/${this.tmdbResult.tmdbId}`;
     }
   }
 
@@ -55,17 +54,14 @@ export class TmdbCardComponent implements OnInit {
   async addToBufferedMovies(e: Event) {
     e.stopPropagation();
     e.preventDefault();
-    const addMovieDto: AddMovieDTO = {
+    const addMovieDto: AddMovieCommandOptions = {
       addOptions: {searchForMovie: false},
       monitored: false,
       qualityProfileId: 6,
-      tmdbId: this.tmdbResult.id
+      tmdbId: this.tmdbResult.tmdbId
     };
 
-
-    const bufferedPouchMovie = new BufferedPouchMovie(this.tmdbResult as TmdbMovieResultDTO, addMovieDto);
-    await this.pouchService.addBufferedMovieToBufferedMovieCollection(bufferedPouchMovie);
-    this.inCollection = this.pouchService.isInCollectionOrBufferedMovieCollection(this.tmdbResult.id);
+    this.inCollection = true;
     console.log("added buffered movie!")
     
   }
