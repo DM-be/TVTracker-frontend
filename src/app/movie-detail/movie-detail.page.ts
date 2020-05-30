@@ -145,8 +145,7 @@ export class MovieDetailPage implements OnInit {
         qualityProfileId: 6,
         tmdbId: this.movie.tmdbId,
       };
-      const command = new AddMovieCommand(this.movieService, addMovieCommandOptions, this.movie);
-      await command.execute();
+      await this.movieService.addMovie(addMovieCommandOptions, this.movie);
       return Promise.resolve(true);
       console.log("added movie!")
     } catch (error) {

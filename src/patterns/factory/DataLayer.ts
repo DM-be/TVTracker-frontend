@@ -19,7 +19,6 @@ export abstract class DataLayer {
         this._movies$ = new BehaviorSubject<RadarrMovie []>([]);
         if(networkService)
         {
-            
             this._connectedToLocalNetwork$ = this.networkService.getNetworkStatus();
         }
         this.initializeDatalayer();
@@ -36,7 +35,6 @@ export abstract class DataLayer {
     }
 
     get connectedToLocalNetwork$(): BehaviorSubject<boolean> {
-        
         return this._connectedToLocalNetwork$;
     }
 

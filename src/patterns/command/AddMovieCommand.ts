@@ -1,3 +1,4 @@
+import { DataLayer } from 'src/patterns/factory/DataLayer';
 import { AddMovieCommandOptions } from './../../interfaces/AddMovieCommandOptions';
 import { TmdbMovie } from './../../interfaces/TmdbMovie';
 import { RadarrMovie } from './../../interfaces/RadarrMovie';
@@ -8,13 +9,13 @@ export class AddMovieCommand implements Command {
 
     
   
-    constructor(private movieService: MovieService, private addMovieCommandOptions: AddMovieCommandOptions, private tmdbMovie: TmdbMovie) {
+    constructor(private addMovieCommandOptions: AddMovieCommandOptions, private tmdbMovie: TmdbMovie, private dataLayer: DataLayer) {
     }
 
     async execute(): Promise<void> {
         try {
             const radarrMovie = this.generateRaddarMovie(this.addMovieCommandOptions, this.tmdbMovie);
-            await this.movieService.addMovie(radarrMovie);
+            await this.dataLayer.addMovie(radarrMovie);
         } catch (error) {
             console.log(error);
         }
@@ -26,7 +27,6 @@ export class AddMovieCommand implements Command {
         const { tmdbId, monitored, qualityProfileId, addOptions } = addMovieCommandOptions;
         const { overview, poster, backDrop } = tmdbMovie;
         const radarrImages: RadarrImage [] = [ {coverType: 'poster', url: '' } , {coverType: 'fanart', url: '' }];
-        
         radarrImages[0].coverType = "poster";
         radarrImages[0].url = poster;
         radarrImages[1].coverType = "fanart"; // check backend if this is also backdrop

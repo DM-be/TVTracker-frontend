@@ -1,3 +1,5 @@
+import { TmdbMovie } from './../../interfaces/TmdbMovie';
+import { AddMovieCommandOptions } from './../../interfaces/AddMovieCommandOptions';
 import { DatalayerService } from './../datalayer/datalayer.service';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from './../../environments/environment';
@@ -7,6 +9,7 @@ import { DataLayer } from 'src/patterns/factory/DataLayer';
 import { RadarrMovie } from 'src/interfaces/RadarrMovie';
 import { Movie } from 'src/interfaces/Movie';
 import { first } from 'rxjs/operators';
+import { AddMovieCommand } from 'src/patterns/command/AddMovieCommand';
 
 @Injectable({
   providedIn: 'root'
@@ -14,34 +17,35 @@ import { first } from 'rxjs/operators';
 export class MovieService {
 
 
+    private dataLayer: DataLayer;
 
     constructor(private dataLayerService: DatalayerService) {
-
+        this.dataLayer = dataLayerService.dataLayer;
     }
 
-    public async addMovie(radarrMovie: RadarrMovie): Promise<void> {
+    public async addMovie(addMovieCommandOptions: AddMovieCommandOptions, tmdbMovie: TmdbMovie): Promise<void> {
         try {
-            await this.dataLayerService.dataLayer.addMovie(radarrMovie);
+            const command = new AddMovieCommand(addMovieCommandOptions, tmdbMovie, this.dataLayer );
+            await command.execute();
         } catch (error) {
             console.log(error);
         }
-       
     }
 
     public getMoviesSubject(): BehaviorSubject<RadarrMovie []> {
-        return this.dataLayerService.dataLayer.movies$;
+        return this.dataLayer.movies$;
     }
 
     public getMovie(tmdbId: number): RadarrMovie {
-        return this.dataLayerService.dataLayer.getMovie(tmdbId);
+        return this.dataLayer.getMovie(tmdbId);
     }
 
     public dataLayerInitialisation(): BehaviorSubject<boolean> {
-        return this.dataLayerService.dataLayer.initializedDataLayer$;
+        return this.dataLayer.initializedDataLayer$;
     }
 
     public isInCollection(tmdbId: number): boolean {
-        return this.dataLayerService.dataLayer.movieIsInCollection(tmdbId);
+        return this.dataLayer.movieIsInCollection(tmdbId);
     }
 
 
