@@ -20,50 +20,40 @@ export class TmdbCardComponent implements OnInit {
   @Input() tmdbResult: TmdbMovie | TmdbTvShow;
   public inCollection: boolean;
 
-  constructor(private movieService: MovieService, private activatedRoute: ActivatedRoute) {
-    
-
-    this.activatedRoute.url.subscribe(x => {
-      if(this.tmdbResult)
-      {
-        this.inCollection = this.movieService.isInCollection(this.tmdbResult.tmdbId);// aslo check with tvshow service!
-      }
-     
-    });
-    
-   }
+  constructor(private movieService: MovieService) {}
 
   ngOnInit() {
     this.inCollection = this.movieService.isInCollection(this.tmdbResult.tmdbId); // aslo check with tvshow service!
     if(this.tmdbResult instanceof TmdbMovie)
     {
       this.routerLink = `/movie-detail/${this.tmdbResult.tmdbId}`;
-    } 
-    else {
+    }
+     else {
       this.routerLink = `/tvshow-detail/${this.tmdbResult.tmdbId}`;
     }
   }
 
-
-  log(e: Event) {
+  async addToCollection(e: Event) {
     e.stopPropagation();
     e.preventDefault();
-    console.log("click")
-  }
-
-  async addToBufferedMovies(e: Event) {
-    e.stopPropagation();
-    e.preventDefault();
-    const addMovieDto: AddMovieCommandOptions = {
-      addOptions: {searchForMovie: false},
+    try {
+    const addMovieCommandOptions: AddMovieCommandOptions = {
+      addOptions: {
+        searchForMovie: true,
+      },
       monitored: false,
       qualityProfileId: 6,
-      tmdbId: this.tmdbResult.tmdbId
+      tmdbId: this.tmdbResult.tmdbId,
     };
-
+    if(this.tmdbResult instanceof TmdbMovie)
+    {
+      await this.movieService.addMovie(addMovieCommandOptions, this.tmdbResult);
+    }
+    // add tvshow! (first episode command)
     this.inCollection = true;
-    console.log("added buffered movie!")
-    
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 }
