@@ -34,7 +34,7 @@
     "core-js": "^2.5.4",
     "es6-promise-plugin": "^4.1.0",
     "lodash": "^4.17.14",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "pouchdb": "^7.1.1",
     "pouchdb-adapter-cordova-sqlite": "^2.0.6",
     "rxjs": "~6.5.1",
